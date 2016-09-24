@@ -6,7 +6,7 @@ pam1 <- pam1/10000
 
 
 pam250 <- pam1
-for (x in c(1:250)) pam250 <- pam250 %*% pam1
+for (i in 1:250) pam250 <- pam250 %*% pam1
 
 
 pam250 <- pam250 * 100
