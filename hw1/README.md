@@ -8,9 +8,9 @@ Calculate PAM250 from PAM1
 ```shell
 git clone https://github.com/yad50968/nccubio.git
 
-cd nccubio/hw1
+cd nccubio/hw1/
 
-RScritp hw1_105753036.R
+Rscritp hw1_105753036.R
 ```
 
 
