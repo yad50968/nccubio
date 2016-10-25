@@ -14,8 +14,8 @@ Rscritp hw2_105753036.R --input test.fasta --score pam250.txt --aln global --gap
         --gap_extend -2 --output result.fasta
 
 ```
-
-```note
+##### Note
+```shell
 You can change the option parameters
   ex:
     input test.fasta
