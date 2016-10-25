@@ -110,6 +110,9 @@ while(count_x > 1 || count_y > 1){
         }
     }
 }
+
+write(final_a,file=o_f,append=FALSE)
+write(final_b,file=o_f,append=TRUE)
 print(final_a)
 print(final_b)         #   paste(final_b,lineb[count_y],sep="")
 
