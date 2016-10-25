@@ -53,7 +53,6 @@ input_file <- readLines(i_f)
 linea = unlist(strsplit(paste("*", input_file[2], sep = ""),split=""))
 lineb = unlist(strsplit(paste("*", input_file[4], sep = ""),split=""))
 
-print(linea)
 final_matrix = matrix(data =NA,nrow = length(lineb) , ncol = length(linea))
 dimnames(final_matrix) <- list(lineb,linea)
     
@@ -75,11 +74,42 @@ for(x in 2:length(linea)){
        final_matrix[y,x] <- max(mat,gepv,geph)
     }
 }
-print(final_matrix)
 
+count_x = length(linea)
+count_y = length(lineb)
+final_a = ""
+final_b = ""
+while(count_x > 1 || count_y > 1){
 
-
-
-
-
+    
+    
+    if(count_x == 1){
+        final_a <- paste(final_a,"-" ,sep="" )
+        final_b <- paste(final_b,lineb[count_y],sep="" )
+        count_y = count_y - 1 
+    }else if(count_y == 1){
+        final_a <- paste(final_a,linea[count_x],sep="" )
+        final_b <- paste(final_b,"-",sep="" )
+        count_x = count_x - 1
+    }else{
+        max = max(final_matrix[y-1,x-1],final_matrix[y,x-1],final_matrix[y-1,x])
+    
+        if(max == final_matrix[y-1,x-1]){
+            final_a <- paste(final_a,linea[count_x],sep="" )
+            final_b <- paste(final_b,lineb[count_y],sep="" )
+            count_x = count_x -1
+            count_y = count_y -1
+        }else if(max == final_matrix[y,x-1]){
+            final_a <- paste(final_a,linea[count_x],sep="" )
+            final_b <- paste(final_b,"-",sep="" )
+            count_x = count_x -1
+        }else if(max == final_matrix[y-1,x]){
+            final_a <- paste(final_a,"-",sep="" )
+            final_b <- paste(final_b,lineb[count_y],sep="" )
+            count_y = count_y -1
+        }
+    }
+}
+print(final_a)
+print(final_b)         #   paste(final_b,lineb[count_y],sep="")
 
