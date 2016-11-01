@@ -20,7 +20,7 @@ You can change the option parameters
   ex:
     input test.fasta
     score pam250.txt  (it can use other matrix)
-    aln global (finish) |local   (upcoming)  
+    aln global (finish) | local   (upcoming)  
     gap_open    (upcoming)
     gap_extend     (upcoming)
     output result.fasta
