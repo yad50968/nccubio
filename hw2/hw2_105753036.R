@@ -47,42 +47,47 @@ print(paste("gap extend penalty :", g_e))
 ######################################
 # main
 ######################################
-# your code
+
 score_file <- as.matrix(read.table(s_f))
 input_file <- readLines(i_f)
 linea = unlist(strsplit(paste("*", input_file[2], sep = ""),split=""))
 lineb = unlist(strsplit(paste("*", input_file[4], sep = ""),split=""))
 
+# store the final matrix value
 final_matrix = matrix(data =NA,nrow = length(lineb) , ncol = length(linea))
+
+# rename the final_matrix row and col name
 dimnames(final_matrix) <- list(lineb,linea)
     
 
+# set default value in final_matrix
+final_matrix[1,1] = 0
+final_matrix[1,2] = as.numeric(g_o)
+final_matrix[2,1] = as.numeric(g_o)
+for(x in 3:length(linea)){
+  final_matrix[1,x] = final_matrix[1,x-1] + as.numeric(g_e)
+}
+for(y in 3:length(lineb)){
+  final_matrix[y,1] = final_matrix[y-1,1] + as.numeric(g_e)
+}
 
 
-final_matrix[1,1] = 1
-for(x in 2:length(linea)){
-   final_matrix[1,x] = score_file[lineb[1],linea[x]]
-}
-for(y in 2:length(lineb)){
-    final_matrix[y,1] = score_file[linea[1],lineb[y]]
-}
+
 for(x in 2:length(linea)){
     for(y in 2:length(lineb)){
        mat <- score_file[linea[x],lineb[y]] + final_matrix[y-1,x-1]
-       gepv <- score_file[lineb[y],ncol(score_file)] + final_matrix[y-1,x]
-       geph <- score_file[linea[x],ncol(score_file)] + final_matrix[y,x-1]
+       gepv <- score_file[lineb[y],ncol(score_file)] + final_matrix[y-1,x]   # In global , meet a gap , add the gap open penalty
+       geph <- score_file[linea[x],ncol(score_file)]  + final_matrix[y,x-1]
        final_matrix[y,x] <- max(mat,gepv,geph)
     }
 }
-
+final_matrix
 count_x = length(linea)
 count_y = length(lineb)
 final_a = ""
 final_b = ""
 while(count_x > 1 || count_y > 1){
 
-    
-    
     if(count_x == 1){
         final_a <- paste(final_a,"-" ,sep="" )
         final_b <- paste(final_b,lineb[count_y],sep="" )
@@ -114,5 +119,4 @@ while(count_x > 1 || count_y > 1){
 write(final_a,file=o_f,append=FALSE)
 write(final_b,file=o_f,append=TRUE)
 print(final_a)
-print(final_b)         #   paste(final_b,lineb[count_y],sep="")
-
+print(final_b) 
