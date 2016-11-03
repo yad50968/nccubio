@@ -72,48 +72,64 @@ for(y in 3:length(lineb)){
 }
 
 
-
+gep_is_open = 1
 for(x in 2:length(linea)){
     for(y in 2:length(lineb)){
        mat <- score_file[linea[x],lineb[y]] + final_matrix[y-1,x-1]
-       gepv <- score_file[lineb[y],ncol(score_file)] + final_matrix[y-1,x]   # In global , meet a gap , add the gap open penalty
-       geph <- score_file[linea[x],ncol(score_file)]  + final_matrix[y,x-1]
-       final_matrix[y,x] <- max(mat,gepv,geph)
-    }
+       if(gep_is_open == 1){
+		gepv <- as.numeric(g_o) + final_matrix[y-1,x]   # In global , meet a gap , add the gap open penalty
+       		geph <- as.numeric(g_o)  + final_matrix[y,x-1]
+       		final_matrix[y,x] <- max(mat,gepv,geph)
+		
+    		if(final_matrix[y,x] != mat){
+			gep_is_open = 0 # it have to add a start gep 	
+		}
+	}else{  
+		gepv <- as.numeric(g_e) + final_matrix[y-1,x]   # In global , meet a gap , add the gap open penalty
+       		geph <- as.numeric(g_e)  + final_matrix[y,x-1]
+		final_matrix[y,x] <- max(mat,gepv,geph)
+    		if(final_matrix[y,x] == mat) gep_is_open = 1 # it have to add a gep 	
+	}
+     }
 }
-final_matrix
-count_x = length(linea)
-count_y = length(lineb)
+count_x =  2 
+count_y =  2
 final_a = ""
 final_b = ""
-while(count_x > 1 || count_y > 1){
 
-    if(count_x == 1){
+while(1){
+
+   if(count_x == length(linea)){
         final_a <- paste(final_a,"-" ,sep="" )
         final_b <- paste(final_b,lineb[count_y],sep="" )
-        count_y = count_y - 1 
-    }else if(count_y == 1){
+        count_y = count_y + 1 
+   	if(count_y > length(lineb)) break; 
+   }else if(count_y == length(lineb)){
         final_a <- paste(final_a,linea[count_x],sep="" )
         final_b <- paste(final_b,"-",sep="" )
-        count_x = count_x - 1
+	count_x = count_x + 1
+   	if(count_x > length(linea)) break;
     }else{
-        max = max(final_matrix[y-1,x-1],final_matrix[y,x-1],final_matrix[y-1,x])
+        max = max(final_matrix[count_y+1,count_x+1],final_matrix[count_y,count_x+1],final_matrix[count_y+1,count_x])
     
-        if(max == final_matrix[y-1,x-1]){
+        if(max == final_matrix[count_y+1,count_x+1]){
             final_a <- paste(final_a,linea[count_x],sep="" )
             final_b <- paste(final_b,lineb[count_y],sep="" )
-            count_x = count_x -1
-            count_y = count_y -1
-        }else if(max == final_matrix[y,x-1]){
+            count_x = count_x + 1
+            count_y = count_y + 1
+        }else if(max == final_matrix[count_y,count_x+1]){
             final_a <- paste(final_a,linea[count_x],sep="" )
             final_b <- paste(final_b,"-",sep="" )
-            count_x = count_x -1
-        }else if(max == final_matrix[y-1,x]){
+            count_x = count_x + 1
+        }else if(max == final_matrix[count_y+1,count_x]){
             final_a <- paste(final_a,"-",sep="" )
             final_b <- paste(final_b,lineb[count_y],sep="" )
-            count_y = count_y -1
+            count_y = count_y + 1
         }
     }
+
+    
+    
 }
 
 write(final_a,file=o_f,append=FALSE)
