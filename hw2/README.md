@@ -1,7 +1,7 @@
 
 ## Homework2
 
-Perform pairwise alignment with global alignment.
+Perform pairwise alignment with global alignment.</br>
 You can change the PAM files and set the gap_open / gap_extend by yourself.
    
 
