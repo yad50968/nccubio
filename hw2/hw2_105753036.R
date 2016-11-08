@@ -131,8 +131,7 @@ while(1){
     
     
 }
-
-write(final_a,file=o_f,append=FALSE)
+write(input_file[1],file=o_f,append=FALSE)
+write(final_a,file=o_f,append=TRUE)
+write(input_file[3],file=o_f,append=TRUE)
 write(final_b,file=o_f,append=TRUE)
-print(final_a)
-print(final_b) 
